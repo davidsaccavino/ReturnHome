@@ -181,16 +181,8 @@
       font-size: clamp(0.9rem, 2vw, 1.05rem);
       line-height: 1.75;
       color: var(--text-secondary);
-      margin-bottom: 1.2rem;
+      margin-bottom: 2rem;
       font-style: italic;
-      transition: color 3s ease;
-    }
-
-    .india-touch {
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      color: var(--accent2);
-      margin-bottom: 1.8rem;
       transition: color 3s ease;
     }
 
@@ -219,7 +211,6 @@
       <p class="unit-label" id="unitLabel">days</p>
     </div>
     <p class="message" id="message"></p>
-    <p class="india-touch" id="indiaTouch"></p>
     <footer>with love, David</footer>
   </main>
 
@@ -235,8 +226,7 @@
         textPrimary: '#E8E4FF', textSecondary: '#9990DD',
         cardBg: 'rgba(255,255,255,0.04)', cardBorder: 'rgba(184,176,255,0.12)',
         headline: (d) => `${d} days until Megan comes home`,
-        message: `Somewhere across the world, under Indian skies, you're having an adventure I can only imagine. Every sunrise here I think of you. Every sunset feels like another page turning toward the day I get to hold you again. The stars don't look quite right without you here — but I'm counting every one.`,
-        india: '✦ From New Delhi to your doorstep — every mile closer matters. ✦',
+        message: `I miss you. That's really all there is to say. The apartment feels different without you here — quieter in a way I don't love. I've been keeping myself busy but you have this way of taking up space in my thoughts no matter what. I can't wait to have you back.`,
         particles: 'stars',
       },
       2: {
@@ -246,8 +236,7 @@
         textPrimary: '#FFE0A0', textSecondary: '#BBA060',
         cardBg: 'rgba(255,200,80,0.05)', cardBorder: 'rgba(255,180,60,0.15)',
         headline: (d) => `${d} days until Megan comes home`,
-        message: `The golden hour is getting closer. I've been keeping your side of the couch warm and your favorite mug right where you left it. India has had the privilege of your company long enough — it's almost time to come home. I can feel the warmth already.`,
-        india: '✦ From the bazaars to our living room — the journey is almost over. ✦',
+        message: `Getting there. I've been doing that thing where I check the calendar too much — you know how I get. I keep thinking about picking you up, about the first meal we'll have together, about just sitting in the same room as you again. Not long now.`,
         particles: 'motes',
       },
       3: {
@@ -257,8 +246,7 @@
         textPrimary: '#FFCCCC', textSecondary: '#CC9999',
         cardBg: 'rgba(255,100,100,0.06)', cardBorder: 'rgba(255,100,100,0.18)',
         headline: (d) => `${d} days until Megan comes home`,
-        message: `Every day now feels like it has a little more color in it. I've been thinking about all the things we'll do the second you're back — and the first thing is just standing still and being in the same room as you. I cannot wait.`,
-        india: '✦ You've seen the Taj Mahal. Now come home and let me make you tea. ✦',
+        message: `Okay, it's actually close now. I do the math constantly and it keeps getting more real. I've been trying to play it cool but I'm genuinely not doing a great job. I cannot wait to see you.`,
         particles: 'petals',
       },
       4: {
@@ -268,8 +256,7 @@
         textPrimary: '#FFB3E6', textSecondary: '#CC88BB',
         cardBg: 'rgba(255,60,172,0.07)', cardBorder: 'rgba(255,60,172,0.2)',
         headline: (d) => `${d} days until Megan comes home`,
-        message: `I can barely sit still. I've cleaned the apartment three times, planned six different dinners, and honestly I just want to fast-forward to the moment I see you at the arrivals gate. Get on the plane, Megan. It's time.`,
-        india: '✦ The marigolds are coming home — and so are you. ✦',
+        message: `I'll be honest — I'm a mess. The best kind of mess, but still. I've already thought about what I'm going to say when I see you and then immediately forgot it. I'll figure something out. Probably just hug you and not let go.`,
         particles: 'hearts',
       },
       5: {
@@ -279,8 +266,7 @@
         textPrimary: '#FFFFFF', textSecondary: '#DDDDFF',
         cardBg: 'rgba(255,215,0,0.06)', cardBorder: 'rgba(255,215,0,0.2)',
         headline: (d) => d === 1 ? `Tomorrow. TOMORROW.` : `${d} days. TWO. DAYS.`,
-        message: `This is it. Tomorrow I get to hug you. I genuinely cannot believe this is almost over. Safe travels tonight. I'll be the one at arrivals who's been there embarrassingly early, holding flowers, barely holding it together.`,
-        india: '✦ Last night in India. Next stop: home. ✦',
+        message: `You're basically home. I can't sleep. I've been waiting for this for so long and I still don't fully believe it's happening. Safe flight — I'll be embarrassingly early at arrivals and I don't even care.`,
         particles: 'confetti',
         shimmer: true,
       },
@@ -291,8 +277,7 @@
         textPrimary: '#FFFFFF', textSecondary: '#EEDDFF',
         cardBg: 'rgba(255,255,255,0.05)', cardBorder: 'rgba(255,255,255,0.15)',
         headline: () => `Welcome Home, Megan!`,
-        message: `You made it. You're home. From the moment you left, every single day has been a countdown to this one. Thank you for your adventure, thank you for coming back, and thank you for being mine.`,
-        india: '✦ From India with love — and now, home. ✦',
+        message: `You made it. You're home. I love you.`,
         particles: 'fireworks',
         shimmer: true,
         welcome: true,
@@ -306,7 +291,6 @@
     const bigNumber    = document.getElementById('bigNumber');
     const unitLabel    = document.getElementById('unitLabel');
     const messageEl    = document.getElementById('message');
-    const indiaTouchEl = document.getElementById('indiaTouch');
     const card         = document.getElementById('card');
 
     // ── Phase logic ──────────────────────────────────────────────────────────
@@ -340,7 +324,6 @@
 
       phaseLabel.textContent = p.label;
       messageEl.textContent  = p.message;
-      indiaTouchEl.textContent = p.india;
 
       headline.classList.toggle('shimmer', !!p.shimmer);
       card.classList.toggle('welcome-mode', !!p.welcome);
