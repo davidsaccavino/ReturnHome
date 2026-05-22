@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Home ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-from: #0D0B2A;
+      --bg-to: #1A1240;
+      --accent: #B8B0FF;
+      --accent2: #7B72CC;
+      --text-primary: #E8E4FF;
+      --text-secondary: #9990DD;
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(184,176,255,0.12);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      background: radial-gradient(ellipse at center, var(--bg-from) 0%, var(--bg-to) 100%);
+      transition: background 3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    canvas#particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2.5rem;
+      max-width: 640px;
+      width: 90%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 3s ease, border-color 3s ease;
+    }
+
+    .phase-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1.2rem;
+      transition: color 3s ease;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      transition: color 3s ease;
+    }
+
+    .headline.shimmer {
+      background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4, #ff6bff, #ff6b6b);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+
+    .countdown-wrap {
+      margin-bottom: 2rem;
+    }
+
+    .big-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(4rem, 14vw, 8rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--accent);
+      display: block;
+      transition: color 3s ease;
+    }
+
+    .big-number.pulse {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .unit-label {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-top: 0.3rem;
+      transition: color 3s ease;
+    }
+
+    .hms-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .hms-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hms-num {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      transition: color 3s ease;
+    }
+
+    .hms-sep {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 700;
+      color: var(--accent2);
+      line-height: 1;
+      padding-top: 0;
+      opacity: 0.6;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 0.15; }
+    }
+
+    .hms-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-top: 0.3rem;
+      transition: color 3s ease;
+    }
+
+    .message {
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+      font-style: italic;
+      transition: color 3s ease;
+    }
+
+    .india-touch {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--accent2);
+      margin-bottom: 1.8rem;
+      transition: color 3s ease;
+    }
+
+    footer {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--accent2);
+      opacity: 0.7;
+      transition: color 3s ease;
+    }
+
+    /* Phase 6 welcome headline override */
+    .welcome-mode .headline {
+      font-size: clamp(2rem, 5vw, 3rem);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <main class="card" id="card">
+    <p class="phase-label" id="phaseLabel">Missing You</p>
+    <h1 class="headline" id="headline">Loading...</h1>
+    <div class="countdown-wrap" id="countdownWrap">
+      <span class="big-number" id="bigNumber">—</span>
+      <p class="unit-label" id="unitLabel">days</p>
+    </div>
+    <p class="message" id="message"></p>
+    <p class="india-touch" id="indiaTouch"></p>
+    <footer>with love, David</footer>
+  </main>
+
+  <script>
+    // ── Config ───────────────────────────────────────────────────────────────
+    const TARGET = new Date('2026-06-28T00:00:00-04:00');
+
+    const PHASES = {
+      1: {
+        label: 'Missing You',
+        bgFrom: '#0D0B2A', bgTo: '#1A1240',
+        accent: '#B8B0FF', accent2: '#7B72CC',
+        textPrimary: '#E8E4FF', textSecondary: '#9990DD',
+        cardBg: 'rgba(255,255,255,0.04)', cardBorder: 'rgba(184,176,255,0.12)',
+        headline: (d) => `${d} days until Megan comes home`,
+        message: `Somewhere across the world, under Indian skies, you're having an adventure I can only imagine. Every sunrise here I think of you. Every sunset feels like another page turning toward the day I get to hold you again. The stars don't look quite right without you here — but I'm counting every one.`,
+        india: '✦ From New Delhi to your doorstep — every mile closer matters. ✦',
+        particles: 'stars',
+      },
+      2: {
+        label: 'Counting Down',
+        bgFrom: '#1A0F00', bgTo: '#2E1B00',
+        accent: '#FFB347', accent2: '#CC8E2A',
+        textPrimary: '#FFE0A0', textSecondary: '#BBA060',
+        cardBg: 'rgba(255,200,80,0.05)', cardBorder: 'rgba(255,180,60,0.15)',
+        headline: (d) => `${d} days until Megan comes home`,
+        message: `The golden hour is getting closer. I've been keeping your side of the couch warm and your favorite mug right where you left it. India has had the privilege of your company long enough — it's almost time to come home. I can feel the warmth already.`,
+        india: '✦ From the bazaars to our living room — the journey is almost over. ✦',
+        particles: 'motes',
+      },
+      3: {
+        label: 'Almost There',
+        bgFrom: '#1A0A0A', bgTo: '#2D1010',
+        accent: '#FF6B6B', accent2: '#CC5555',
+        textPrimary: '#FFCCCC', textSecondary: '#CC9999',
+        cardBg: 'rgba(255,100,100,0.06)', cardBorder: 'rgba(255,100,100,0.18)',
+        headline: (d) => `${d} days until Megan comes home`,
+        message: `Every day now feels like it has a little more color in it. I've been thinking about all the things we'll do the second you're back — and the first thing is just standing still and being in the same room as you. I cannot wait.`,
+        india: '✦ You've seen the Taj Mahal. Now come home and let me make you tea. ✦',
+        particles: 'petals',
+      },
+      4: {
+        label: 'So Close!',
+        bgFrom: '#1A0015', bgTo: '#30002A',
+        accent: '#FF3CAC', accent2: '#CC2288',
+        textPrimary: '#FFB3E6', textSecondary: '#CC88BB',
+        cardBg: 'rgba(255,60,172,0.07)', cardBorder: 'rgba(255,60,172,0.2)',
+        headline: (d) => `${d} days until Megan comes home`,
+        message: `I can barely sit still. I've cleaned the apartment three times, planned six different dinners, and honestly I just want to fast-forward to the moment I see you at the arrivals gate. Get on the plane, Megan. It's time.`,
+        india: '✦ The marigolds are coming home — and so are you. ✦',
+        particles: 'hearts',
+      },
+      5: {
+        label: 'Almost Home',
+        bgFrom: '#0A0015', bgTo: '#150025',
+        accent: '#FFD700', accent2: '#CC9900',
+        textPrimary: '#FFFFFF', textSecondary: '#DDDDFF',
+        cardBg: 'rgba(255,215,0,0.06)', cardBorder: 'rgba(255,215,0,0.2)',
+        headline: (d) => d === 1 ? `Tomorrow. TOMORROW.` : `${d} days. TWO. DAYS.`,
+        message: `This is it. Tomorrow I get to hug you. I genuinely cannot believe this is almost over. Safe travels tonight. I'll be the one at arrivals who's been there embarrassingly early, holding flowers, barely holding it together.`,
+        india: '✦ Last night in India. Next stop: home. ✦',
+        particles: 'confetti',
+        shimmer: true,
+      },
+      6: {
+        label: 'She\'s Home ♡',
+        bgFrom: '#000000', bgTo: '#0A0010',
+        accent: '#FFD700', accent2: '#FFFFFF',
+        textPrimary: '#FFFFFF', textSecondary: '#EEDDFF',
+        cardBg: 'rgba(255,255,255,0.05)', cardBorder: 'rgba(255,255,255,0.15)',
+        headline: () => `Welcome Home, Megan!`,
+        message: `You made it. You're home. From the moment you left, every single day has been a countdown to this one. Thank you for your adventure, thank you for coming back, and thank you for being mine.`,
+        india: '✦ From India with love — and now, home. ✦',
+        particles: 'fireworks',
+        shimmer: true,
+        welcome: true,
+      },
+    };
+
+    // ── DOM refs ─────────────────────────────────────────────────────────────
+    const phaseLabel   = document.getElementById('phaseLabel');
+    const headline     = document.getElementById('headline');
+    const countdownWrap = document.getElementById('countdownWrap');
+    const bigNumber    = document.getElementById('bigNumber');
+    const unitLabel    = document.getElementById('unitLabel');
+    const messageEl    = document.getElementById('message');
+    const indiaTouchEl = document.getElementById('indiaTouch');
+    const card         = document.getElementById('card');
+
+    // ── Phase logic ──────────────────────────────────────────────────────────
+    function getDaysRemaining() {
+      const diff = TARGET - Date.now();
+      return diff <= 0 ? 0 : Math.ceil(diff / 86400000);
+    }
+
+    function getPhase(days) {
+      if (days >= 30) return 1;
+      if (days >= 15) return 2;
+      if (days >= 7)  return 3;
+      if (days >= 3)  return 4;
+      if (days >= 1)  return 5;
+      return 6;
+    }
+
+    let currentPhase = null;
+
+    function applyPhase(phaseNum) {
+      const p = PHASES[phaseNum];
+      const root = document.documentElement;
+      root.style.setProperty('--bg-from',       p.bgFrom);
+      root.style.setProperty('--bg-to',         p.bgTo);
+      root.style.setProperty('--accent',        p.accent);
+      root.style.setProperty('--accent2',       p.accent2);
+      root.style.setProperty('--text-primary',  p.textPrimary);
+      root.style.setProperty('--text-secondary',p.textSecondary);
+      root.style.setProperty('--card-bg',       p.cardBg);
+      root.style.setProperty('--card-border',   p.cardBorder);
+
+      phaseLabel.textContent = p.label;
+      messageEl.textContent  = p.message;
+      indiaTouchEl.textContent = p.india;
+
+      headline.classList.toggle('shimmer', !!p.shimmer);
+      card.classList.toggle('welcome-mode', !!p.welcome);
+
+      if (phaseNum !== currentPhase) {
+        setParticleMode(p.particles);
+      }
+
+      currentPhase = phaseNum;
+    }
+
+    function updateDisplay(days) {
+      const p = PHASES[getPhase(days)];
+      headline.textContent = p.headline(days);
+
+      if (days <= 2 && days > 0) {
+        // Live HH:MM:SS
+        const total = TARGET - Date.now();
+        const h = Math.floor(total / 3600000);
+        const m = Math.floor((total % 3600000) / 60000);
+        const s = Math.floor((total % 60000) / 1000);
+        const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
+
+        if (countdownWrap.dataset.mode !== 'hms') {
+          countdownWrap.dataset.mode = 'hms';
+          countdownWrap.innerHTML = `
+            <div class="hms-wrap">
+              <div class="hms-block">
+                <span class="hms-num" id="hmsH">${pad(h)}</span>
+                <span class="hms-label">hours</span>
+              </div>
+              <span class="hms-sep">:</span>
+              <div class="hms-block">
+                <span class="hms-num" id="hmsM">${pad(m)}</span>
+                <span class="hms-label">min</span>
+              </div>
+              <span class="hms-sep">:</span>
+              <div class="hms-block">
+                <span class="hms-num" id="hmsS">${pad(s)}</span>
+                <span class="hms-label">sec</span>
+              </div>
+            </div>`;
+        } else {
+          document.getElementById('hmsH').textContent = pad(h);
+          document.getElementById('hmsM').textContent = pad(m);
+          document.getElementById('hmsS').textContent = pad(s);
+        }
+      } else if (days === 0) {
+        if (countdownWrap.dataset.mode !== 'welcome') {
+          countdownWrap.dataset.mode = 'welcome';
+          countdownWrap.innerHTML = `<span class="big-number pulse" style="font-size: clamp(3rem,10vw,6rem); color: var(--accent)">&#10084;</span>`;
+        }
+      } else {
+        if (countdownWrap.dataset.mode !== 'days') {
+          countdownWrap.dataset.mode = 'days';
+          countdownWrap.innerHTML = `<span class="big-number" id="bigNumber">${days}</span><p class="unit-label" id="unitLabel">days</p>`;
+        } else {
+          const bn = document.getElementById('bigNumber');
+          if (bn) bn.textContent = days;
+        }
+      }
+    }
+
+    function tick() {
+      const days = getDaysRemaining();
+      const phase = getPhase(days);
+      if (phase !== currentPhase) applyPhase(phase);
+      updateDisplay(days);
+    }
+
+    // ── Canvas / Particles ───────────────────────────────────────────────────
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let dpr = window.devicePixelRatio || 1;
+    let W, H;
+
+    function resizeCanvas() {
+      dpr = window.devicePixelRatio || 1;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+    resizeCanvas();
+
+    let particles = [];
+    let particleMode = 'stars';
+    let burstTimer = 0;
+    let bursts = [];
+    let animId = null;
+    let paused = false;
+
+    // Heart draw helper
+    function drawHeart(x, y, size) {
+      ctx.beginPath();
+      ctx.moveTo(x, y - size * 0.25);
+      ctx.bezierCurveTo(x, y - size, x - size, y - size * 0.75, x - size, y - size * 0.25);
+      ctx.bezierCurveTo(x - size, y + size * 0.25, x, y + size * 0.5, x, y + size * 0.75);
+      ctx.bezierCurveTo(x, y + size * 0.5, x + size, y + size * 0.25, x + size, y - size * 0.25);
+      ctx.bezierCurveTo(x + size, y - size * 0.75, x, y - size, x, y - size * 0.25);
+      ctx.closePath();
+    }
+
+    const CONFETTI_COLORS = ['#FF6B6B','#FFD700','#4ECDC4','#45B7D1','#FF6BFF','#FF3CAC','#B8B0FF'];
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function randInt(a, b) { return Math.floor(rand(a, b + 1)); }
+    function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function makeParticle(mode) {
+      const base = { life: 0, maxLife: rand(180, 360), type: mode };
+      switch (mode) {
+        case 'stars': return { ...base,
+          x: rand(0, W), y: rand(0, H),
+          vx: rand(-0.1, 0.1), vy: rand(-0.1, 0.1),
+          size: rand(1, 3),
+          baseOpacity: rand(0.3, 0.9),
+          phaseOffset: rand(0, Math.PI * 2),
+          maxLife: rand(300, 600),
+        };
+        case 'motes': return { ...base,
+          x: rand(0, W), y: rand(H * 0.2, H),
+          vx: rand(-0.15, 0.15), vy: rand(-0.7, -0.3),
+          size: rand(2, 5),
+          maxLife: rand(200, 400),
+          phaseOffset: rand(0, Math.PI * 2),
+        };
+        case 'petals': return { ...base,
+          x: rand(0, W), y: rand(-20, H * 0.3),
+          vx: 0, vy: rand(0.4, 0.9),
+          rotation: rand(0, Math.PI * 2),
+          rotSpeed: rand(-0.02, 0.02),
+          maxLife: rand(240, 480),
+          swayOffset: rand(0, Math.PI * 2),
+        };
+        case 'hearts': return { ...base,
+          x: rand(0, W),
+          baseY: rand(H * 0.2, H * 0.8),
+          vx: rand(-0.3, 0.3),
+          size: rand(8, 18),
+          amplitude: rand(20, 45),
+          speed: rand(0.025, 0.055),
+          phaseOffset: rand(0, Math.PI * 2),
+          color: choice(['#FF3CAC','#FF69B4','#FF85C8','#FF6BFF','#FFB3E6']),
+          maxLife: rand(300, 500),
+        };
+        case 'confetti': {
+          const isHeart = Math.random() < 0.3;
+          return { ...base,
+            x: rand(0, W), y: rand(-20, 0),
+            vx: rand(-0.8, 0.8), vy: rand(1, 3),
+            rotation: rand(0, Math.PI * 2),
+            rotSpeed: rand(-0.06, 0.06),
+            size: isHeart ? rand(8, 14) : rand(4, 10),
+            color: choice(CONFETTI_COLORS),
+            isHeart,
+            maxLife: rand(300, 600),
+          };
+        }
+        default: return null;
+      }
+    }
+
+    function initParticles() {
+      const counts = { stars: 80, motes: 60, petals: 50, hearts: 40, confetti: 120, fireworks: 0 };
+      const count = counts[particleMode] || 0;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        const p = makeParticle(particleMode);
+        if (p) {
+          // Scatter initial life so they don't all spawn together
+          p.life = rand(0, p.maxLife);
+          particles.push(p);
+        }
+      }
+      bursts = [];
+      burstTimer = 0;
+    }
+
+    function setParticleMode(mode) {
+      particleMode = mode;
+      initParticles();
+    }
+
+    function spawnBurst() {
+      const x = rand(W * 0.15, W * 0.85);
+      const y = rand(H * 0.1, H * 0.55);
+      const hue = randInt(0, 360);
+      const burst = [];
+      for (let i = 0; i < 60; i++) {
+        const angle = rand(0, Math.PI * 2);
+        const speed = rand(2, 8);
+        burst.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: rand(2, 5),
+          color: `hsl(${hue}, 100%, ${rand(55, 80)}%)`,
+          life: 0, maxLife: rand(60, 120),
+          alive: true,
+        });
+      }
+      bursts.push(burst);
+      if (bursts.length > 5) bursts.shift();
+    }
+
+    let lastTime = 0;
+
+    function loop(ts) {
+      if (paused) return;
+      animId = requestAnimationFrame(loop);
+
+      if (particleMode === 'fireworks') {
+        // Partial clear for trail effect
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.fillRect(0, 0, W, H);
+
+        // Update burst timer
+        if (ts - lastTime > 2500) {
+          spawnBurst();
+          lastTime = ts;
+        }
+        // Draw bursts
+        for (let b = bursts.length - 1; b >= 0; b--) {
+          const burst = bursts[b];
+          let allDead = true;
+          for (let i = burst.length - 1; i >= 0; i--) {
+            const p = burst[i];
+            if (!p.alive) continue;
+            allDead = false;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.08;
+            p.life++;
+            const alpha = 1 - p.life / p.maxLife;
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            if (p.life >= p.maxLife) p.alive = false;
+          }
+          if (allDead) bursts.splice(b, 1);
+        }
+        ctx.globalAlpha = 1;
+        return;
+      }
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Refill depleted particles
+      const counts = { stars: 80, motes: 60, petals: 50, hearts: 40, confetti: 120 };
+      const target = counts[particleMode] || 0;
+      while (particles.length < target) {
+        particles.push(makeParticle(particleMode));
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life++;
+
+        switch (p.type) {
+          case 'stars': {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+            if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+            const tw = Math.sin(p.life * 0.03 + p.phaseOffset);
+            const alpha = p.baseOpacity * (0.4 + 0.6 * ((tw + 1) / 2));
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#C9C4FF';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+          }
+          case 'motes': {
+            p.x += p.vx; p.y += p.vy;
+            if (p.y < -10) { particles.splice(i, 1); continue; }
+            const prog = p.life / p.maxLife;
+            const alpha = prog < 0.2 ? prog / 0.2 : prog > 0.8 ? (1 - prog) / 0.2 : 1;
+            const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+            grad.addColorStop(0, `rgba(255,215,80,${alpha * 0.9})`);
+            grad.addColorStop(1, `rgba(255,180,40,0)`);
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+          }
+          case 'petals': {
+            p.y += p.vy;
+            p.rotation += p.rotSpeed;
+            p.x += Math.sin(p.life * 0.025 + p.swayOffset) * 0.4;
+            if (p.y > H + 20) { particles.splice(i, 1); continue; }
+            ctx.globalAlpha = 0.55;
+            ctx.fillStyle = '#FFB3B3';
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 3, 7, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            break;
+          }
+          case 'hearts': {
+            p.x += p.vx;
+            const y = p.baseY + p.amplitude * Math.abs(Math.sin(p.life * p.speed + p.phaseOffset));
+            if (p.x < -30) p.x = W + 30;
+            if (p.x > W + 30) p.x = -30;
+            ctx.globalAlpha = 0.7;
+            ctx.fillStyle = p.color;
+            drawHeart(p.x, y, p.size);
+            ctx.fill();
+            break;
+          }
+          case 'confetti': {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.04;
+            p.rotation += p.rotSpeed;
+            if (p.y > H + 30) {
+              // respawn at top
+              p.y = -10;
+              p.x = rand(0, W);
+              p.vy = rand(1, 3);
+              p.life = 0;
+              p.vx = rand(-0.8, 0.8);
+            }
+            ctx.globalAlpha = 0.85;
+            ctx.fillStyle = p.color;
+            if (p.isHeart) {
+              drawHeart(p.x, p.y, p.size);
+              ctx.fill();
+            } else {
+              ctx.save();
+              ctx.translate(p.x, p.y);
+              ctx.rotate(p.rotation);
+              ctx.fillRect(-p.size / 2, -p.size * 1.25, p.size, p.size * 2.5);
+              ctx.restore();
+            }
+            break;
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      paused = document.hidden;
+      if (!paused) {
+        lastTime = 0;
+        animId = requestAnimationFrame(loop);
+      }
+    });
+
+    // ── Boot ─────────────────────────────────────────────────────────────────
+    tick();
+    setInterval(tick, 1000);
+    initParticles();
+    animId = requestAnimationFrame(loop);
+
+    // Trigger first burst for fireworks immediately
+    const _origLoop = loop;
+  </script>
+</body>
+</html>
