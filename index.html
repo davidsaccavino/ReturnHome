@@ -78,7 +78,7 @@
       font-weight: 700;
       line-height: 1.3;
       color: var(--text-primary);
-      margin-bottom: 0;
+      margin-bottom: 0.75rem;
       transition: color 3s ease;
     }
 
@@ -97,7 +97,7 @@
     }
 
     .countdown-wrap {
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.25rem;
     }
 
     .big-number {
@@ -204,11 +204,11 @@
   <canvas id="particles"></canvas>
   <main class="card" id="card">
     <p class="phase-label" id="phaseLabel">Missing You</p>
-    <h1 class="headline" id="headline">Loading...</h1>
     <div class="countdown-wrap" id="countdownWrap">
       <span class="big-number" id="bigNumber">...</span>
       <p class="unit-label" id="unitLabel">days</p>
     </div>
+    <h1 class="headline" id="headline">until Megan comes home</h1>
     <p class="message" id="message"></p>
     <footer>with love, David</footer>
   </main>
@@ -224,7 +224,7 @@
         accent: '#B8B0FF', accent2: '#7B72CC',
         textPrimary: '#E8E4FF', textSecondary: '#9990DD',
         cardBg: 'rgba(255,255,255,0.04)', cardBorder: 'rgba(184,176,255,0.12)',
-        headline: (d) => `${d} days until Megan comes home`,
+        headline: () => `until Megan comes home`,
         message: `Wishing we were together. Our love spans over 8,000 miles.`,
         particles: 'stars',
       },
@@ -234,7 +234,7 @@
         accent: '#FFB347', accent2: '#CC8E2A',
         textPrimary: '#FFE0A0', textSecondary: '#BBA060',
         cardBg: 'rgba(255,200,80,0.05)', cardBorder: 'rgba(255,180,60,0.15)',
-        headline: (d) => `${d} days until Megan comes home`,
+        headline: () => `until Megan comes home`,
         message: `Getting closer every day. Soon enough, we'll be together again!`,
         particles: 'motes',
       },
@@ -244,7 +244,7 @@
         accent: '#FF6B6B', accent2: '#CC5555',
         textPrimary: '#FFCCCC', textSecondary: '#CC9999',
         cardBg: 'rgba(255,100,100,0.06)', cardBorder: 'rgba(255,100,100,0.18)',
-        headline: (d) => `${d} days until Megan comes home`,
+        headline: () => `until Megan comes home`,
         message: `The wait is nearly over!`,
         particles: 'petals',
       },
@@ -254,7 +254,7 @@
         accent: '#FF3CAC', accent2: '#CC2288',
         textPrimary: '#FFB3E6', textSecondary: '#CC88BB',
         cardBg: 'rgba(255,60,172,0.07)', cardBorder: 'rgba(255,60,172,0.2)',
-        headline: (d) => `${d} days until Megan comes home`,
+        headline: () => `until Megan comes home`,
         message: `Just a few more days until we can cuddle again!`,
         particles: 'hearts',
       },
